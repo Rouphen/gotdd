@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// Hello() for testing TDD
+// Hello for testing TDD
 func Hello(name string) string {
 	if name == "" {
 		name = "world"
