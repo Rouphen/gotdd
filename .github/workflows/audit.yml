@@ -36,7 +36,7 @@ jobs:
       run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
     - name: Run staticcheck
-      run: staticckeck ./...
+      run: staticcheck ./...
 
     - name: install golint
       run: go install golang.org/x/lint/golint@latest
