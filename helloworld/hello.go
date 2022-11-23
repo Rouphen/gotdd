@@ -3,10 +3,14 @@ package main
 import "fmt"
 
 // function Hello() for testing TDD
-func Hello() string {
-	return "Hello, world"
+func Hello(name string) string {
+	if name == "" {
+		name = "world"
+	}
+
+	return "Hello, " + name
 }
 
 func main() {
-	fmt.Println(Hello())
+	fmt.Println(Hello(""))
 }
