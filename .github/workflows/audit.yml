@@ -23,9 +23,9 @@ jobs:
     - name: Verify dependencies
       run: go mod verify
 
-    - name: Build
+#    - name: Build
 #      run: go build -o hello -v ./... 
-      run: make build
+#      run: make build
 
     - name: Run go vet
       run: go vet ./...
