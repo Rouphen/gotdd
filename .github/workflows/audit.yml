@@ -24,13 +24,11 @@ jobs:
       run: go mod verify
 
     - name: Build
-      run: go build -o hello -v ./... 
+#      run: go build -o hello -v ./... 
+      run: make build
 
     - name: Run go vet
       run: go vet ./...
-
-    # - name: Get staticcheck
-    #   run: go get honnef.co/go/tools/cmd/staticcheck@latest
 
     - name: install staticcheck
       run: go install honnef.co/go/tools/cmd/staticcheck@latest
