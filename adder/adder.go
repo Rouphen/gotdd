@@ -1,4 +1,4 @@
-package main
+package integers
 
 import "fmt"
 // Add takes two integers and returns the sum of them
