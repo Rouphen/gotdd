@@ -1,7 +1,5 @@
 package hello
 
-import "fmt"
-
 const spanish = "Spanish"
 const french = "French"
 
