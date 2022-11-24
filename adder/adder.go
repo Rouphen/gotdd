@@ -1,8 +1,6 @@
 package integers
 
-import "fmt"
-
-// Add takes two integers and returns the sum of them
-func Add(x, y int) int {
+// Addx takes two integers and returns the sum of them
+func Addx(x, y int) int {
 	return x + y
 }
