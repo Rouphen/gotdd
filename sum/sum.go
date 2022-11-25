@@ -1,11 +1,11 @@
 package sum
 
 func Sum(numbers [5]int) int {
-	result := 0
+	sum := 0
 
-	for i := 0; i < 5; i++ {
-		result += numbers[i]
+	for _, number := range numbers {
+		sum += number
 	}
 
-	return result
+	return sum
 }
