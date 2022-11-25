@@ -20,6 +20,7 @@ func TestArea(t *testing.T) {
 	}{
 		{Rectangle{12, 6}, 72.0},
 		{Circle{10}, 314.16},
+		{Triangle{12, 6}, 36.0},
 	}
 
 	for _, tt := range areaTests {
