@@ -15,10 +15,12 @@ func TestPerimeter(t *testing.T) {
 
 func TestArea(t *testing.T) {
 	checkArea := func(t *testing.T, want, got float64) {
+		t.Helper()
 		if got != want {
 			t.Errorf("got %.2f want %.2f", got, want)
 		}
 	}
+	
 	t.Run("rectangles", func(t *testing.T) {
 		rectangle := Rectangle{12.0, 6.0}
 		got := rectangle.Area()
