@@ -21,6 +21,11 @@ func SumAll(numbersOfSum ...[]int) []int {
 }
 
 func tails(numbers []int) int {
+	lengthOfNumbers := len(numbers)
+	if lengthOfNumbers == 0 {
+		return 0
+	}
+	
 	return numbers[len(numbers)-1]
 }
 
