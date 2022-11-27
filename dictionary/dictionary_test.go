@@ -72,6 +72,23 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
+func TestDelete(t *testing.T) {
+	t.Run("delete exist word", func(t *testing.T) {
+		dictionary := Dictionary{}
+		word := "test"
+		definition := "just a test"
+
+		err := dictionary.Add(word, definition)
+		assertError(t, err, nil)
+
+		dictionary.Delete(word)
+
+		_, errSearch := dictionary.Search(word)
+		assertError(t, errSearch, ErrNotFound)
+
+	})
+}
+
 func assertDefinition(t *testing.T, dictionary Dictionary, word, definition string) {
 	t.Helper()
 

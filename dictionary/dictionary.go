@@ -1,10 +1,10 @@
 package dictionary
 
-import "errors"
-
 var (
-	ErrNotFound   = errors.New("could not find the word you were looking for")
-	ErrWordExists = errors.New("cannot add word because it alread exists")
+	ErrNotFound          = DictionaryErr("could not find the word you were looking for")
+	ErrWordExists        = DictionaryErr("cannot add word because it alread exists")
+	ErrWordDoesNotExist  = DictionaryErr("cannot update word because it does not exist")
+	ErrWordDoesNotDelete = DictionaryErr("cannot delete word because it does not exist")
 )
 
 type DictionaryErr string
@@ -45,7 +45,7 @@ func (d Dictionary) Update(word, newDefinition string) error {
 
 	switch err {
 	case ErrNotFound:
-		return ErrNotFound
+		return ErrWordDoesNotExist
 	case nil:
 		d[word] = newDefinition
 	default:
@@ -53,4 +53,8 @@ func (d Dictionary) Update(word, newDefinition string) error {
 	}
 
 	return nil
+}
+
+func (d Dictionary) Delete(word string) {
+	delete(d, word)
 }
