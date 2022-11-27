@@ -7,6 +7,12 @@ var (
 	ErrWordExists = errors.New("cannot add word because it alread exists")
 )
 
+type DictionaryErr string
+
+func (e DictionaryErr) Error() string {
+	return string(e)
+}
+
 type Dictionary map[string]string
 
 func (d Dictionary) Search(word string) (string, error) {
@@ -27,6 +33,21 @@ func (d Dictionary) Add(word, definition string) error {
 		d[word] = definition
 	case nil:
 		return ErrWordExists
+	default:
+		return err
+	}
+
+	return nil
+}
+
+func (d Dictionary) Update(word, newDefinition string) error {
+	_, err := d.Search(word)
+
+	switch err {
+	case ErrNotFound:
+		return ErrNotFound
+	case nil:
+		d[word] = newDefinition
 	default:
 		return err
 	}
