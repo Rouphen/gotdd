@@ -24,7 +24,7 @@ func TestRacer(t *testing.T) {
 			t.Errorf("dit not expect an error but got one %v", err)
 		}
 
-		if got == want {
+		if got != want {
 			t.Errorf("got '%s', want '%s'", got, want)
 		}
 	})
