@@ -97,6 +97,14 @@ func TestWalk_Nested(t *testing.T) {
 			}{"Chris", 33},
 			[]string{"Chris"},
 		},
+		{
+			"Pointers to things",
+			&Person{
+				"Chris",
+				Profile{33, "London"},
+			},
+			[]string{"Chris", "London"},
+		},
 	}
 
 	for _, test := range cases {
