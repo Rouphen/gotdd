@@ -21,6 +21,11 @@ func TestWalk(t *testing.T) {
 		Input         interface{}
 		ExpectedCalls []string
 	}{
+		// {
+		// 	"just a string",
+		// 	"just a string",
+		// 	[]string{"just a string"},
+		// },
 		{
 			"Struct with one string field",
 			struct {
@@ -104,6 +109,30 @@ func TestWalk_Nested(t *testing.T) {
 				Profile{33, "London"},
 			},
 			[]string{"Chris", "London"},
+		},
+		{
+			"Slices",
+			[]Profile{
+				{33, "London"},
+				{34, "Reykjavík"},
+			},
+			[]string{"London", "Reykjavík"},
+		},
+		{
+			"Arrays",
+			[2]Profile{
+				{33, "London"},
+				{34, "Reykjavík"},
+			},
+			[]string{"London", "Reykjavík"},
+		},
+		{
+			"Maps",
+			map[string]string{
+				"Foo": "Bar",
+				"Baz": "Boz",
+			},
+			[]string{"Bar", "Boz"},
 		},
 	}
 
