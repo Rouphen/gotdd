@@ -11,8 +11,7 @@ type PlayerStore interface {
 }
 
 type PlayerServer struct {
-	store    PlayerStore
-	winCalls []string
+	store PlayerStore
 }
 
 func (p *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -32,27 +31,11 @@ func (p *PlayerServer) processWin(w http.ResponseWriter, player string) {
 }
 
 func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
-	score := p.GetPlayerScore(player)
+	score := p.store.GetPlayerScore(player)
 
 	if score == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
 
 	fmt.Fprint(w, score)
-}
-
-func (s *PlayerServer) RecordWin(name string) {
-	s.winCalls = append(s.winCalls, name)
-}
-
-func (s *PlayerServer) GetPlayerScore(player string) int {
-	if player == "Pepper" {
-		return 20
-	}
-
-	if player == "Floyd" {
-		return 10
-	}
-
-	return 0
 }

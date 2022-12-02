@@ -30,7 +30,7 @@ func TestPlayerServer(t *testing.T) {
 		},
 		nil,
 	}
-	server := &PlayerServer{&store, nil}
+	server := &PlayerServer{&store}
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
@@ -82,7 +82,7 @@ func TestStoreWins(t *testing.T) {
 		nil,
 	}
 
-	server := &PlayerServer{&store, nil}
+	server := &PlayerServer{&store}
 
 	t.Run("it records wins on POST", func(t *testing.T) {
 		player := "Pepper"
@@ -102,6 +102,22 @@ func TestStoreWins(t *testing.T) {
 			t.Errorf("did not store correct winner got '%s' want '%s'", store.winCalls[0], player)
 		}
 	})
+}
+
+func TestRecordingWinsAndRetrievingThem(t *testing.T) {
+	store := NewInMemoryPlayerStore()
+	server := PlayerServer{store}
+	player := "Pepper"
+
+	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(player))
+	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(player))
+	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(player))
+
+	response := httptest.NewRecorder()
+	server.ServeHTTP(response, newGetScoreRequest(player))
+	assertStatus(t, response.Code, http.StatusOK)
+
+	assertResponseBody(t, response.Body.String(), "3")
 }
 
 func newPostWinRequest(name string) *http.Request {
