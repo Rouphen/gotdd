@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 )
 
 type League []Player
@@ -19,14 +20,46 @@ func (l League) Find(name string) *Player {
 }
 
 type FileSystemStore struct {
-	database io.ReadWriteSeeker
+	database *json.Encoder
+	league   League
+}
+
+func NewFileSystemStore(database *os.File) (*FileSystemStore, error) {
+	err := initialisePlayerDBFile(database)
+	if err != nil {
+		return nil, fmt.Errorf("problem initialising player db file %s, %v", database.Name(), err)
+	}
+
+	league, err := NewLeague(database)
+
+	if err != nil {
+		return nil, fmt.Errorf("problem loading player store from file %s, %v", database.Name(), err)
+	}
+
+	return &FileSystemStore{
+		database: json.NewEncoder(&tape{database}),
+		league:   league,
+	}, nil
+}
+
+func initialisePlayerDBFile(file *os.File) error {
+	file.Seek(0, 0)
+	info, err := file.Stat()
+
+	if err != nil {
+		return fmt.Errorf("problem getting file info from file %s, %v", file.Name(), err)
+	}
+
+	if info.Size() == 0 {
+		file.Write([]byte("[]"))
+		file.Seek(0, 0)
+	}
+
+	return nil
 }
 
 func (f *FileSystemStore) GetLeague() League {
-	f.database.Seek(0, 0)
-	league, _ := NewLeague(f.database)
-
-	return league
+	return f.league
 }
 
 func NewLeague(rdr io.Reader) ([]Player, error) {
@@ -41,7 +74,7 @@ func NewLeague(rdr io.Reader) ([]Player, error) {
 }
 
 func (f *FileSystemStore) GetPlayerScore(name string) int {
-	player := f.GetLeague().Find(name)
+	player := f.league.Find(name)
 	if player != nil {
 		return player.Wins
 	}
@@ -50,15 +83,13 @@ func (f *FileSystemStore) GetPlayerScore(name string) int {
 }
 
 func (f *FileSystemStore) RecordWin(name string) {
-	league := f.GetLeague()
-	player := league.Find(name)
+	player := f.league.Find(name)
 
 	if player != nil {
 		player.Wins++
 	} else {
-		league = append(league, Player{name, 1})
+		f.league = append(f.league, Player{name, 1})
 	}
 
-	f.database.Seek(0, 0)
-	json.NewEncoder(f.database).Encode(league)
+	f.database.Encode(f.league)
 }
