@@ -20,8 +20,8 @@ func TestGetPlayerScore(t *testing.T) {
 		got := store.GetLeague()
 
 		want := []Player{
-			{"Cleo", 10},
 			{"Chris", 33},
+			{"Cleo", 10},
 		}
 
 		assertLeague(t, got, want)
@@ -86,28 +86,28 @@ func TestGetPlayerScore(t *testing.T) {
 	})
 
 	t.Run("league sorted", func(t *testing.T) {
-		// database, cleanDatabase := createTempFile(t, `[
-		// {"Name": "Cleo", "Wins": 10},
-		// {"Name": "Chris", "Wins": 33}]`)
-		// defer cleanDatabase()
+		database, cleanDatabase := createTempFile(t, `[
+		{"Name": "Cleo", "Wins": 10},
+		{"Name": "Chris", "Wins": 33}]`)
+		defer cleanDatabase()
 
-		// store, err := NewFileSystemStore(database)
-		// assertNoError(t, err)
+		store, err := NewFileSystemStore(database)
+		assertNoError(t, err)
 
-		// got := store.GetLeague()
-		// assertNoError(t, err)
+		got := store.GetLeague()
+		assertNoError(t, err)
 
-		// want := []Player{
-		// 	{"Chris", 33},
-		// 	{"Cleo", 10},
-		// }
+		want := []Player{
+			{"Chris", 33},
+			{"Cleo", 10},
+		}
 
-		// assertLeague(t, got, want)
+		assertLeague(t, got, want)
 
-		// // read again
-		// got = store.GetLeague()
-		// assertNoError(t, err)
-		// assertLeague(t, got, want)
+		// read again
+		got = store.GetLeague()
+		assertNoError(t, err)
+		assertLeague(t, got, want)
 	})
 }
 
