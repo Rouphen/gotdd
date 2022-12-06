@@ -1,5 +1,3 @@
-module v2
+module gowithtests.com/gotdd
 
-go 1.13
-
-require golang.org/x/text v0.4.0
+go 1.16
