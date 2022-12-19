@@ -20,9 +20,6 @@ func userSends(messages ...string) io.Reader {
 	return strings.NewReader(strings.Join(messages, "\n"))
 }
 
-var dummyBlindAlerter = &SpyBlindAlerter{}
-var dummyPlayerStore = &StubPlayerStore{}
-var dummyStdIn = &bytes.Buffer{}
 var dummyStdOut = &bytes.Buffer{}
 
 func TestCLI(t *testing.T) {
@@ -73,13 +70,6 @@ func assertGameStartedWith(t *testing.T, game *GameSpy, numberOfPlayersWanted in
 	}
 }
 
-func assertGameNotFinished(t *testing.T, game *GameSpy) {
-	t.Helper()
-	if game.FinishedCalled {
-		t.Errorf("game should not have finished")
-	}
-}
-
 func assertGameNotStarted(t *testing.T, game *GameSpy) {
 	t.Helper()
 	if game.StartCalled {
@@ -108,11 +98,4 @@ func assertScheduledAlert(t *testing.T, got, want ScheduledAlert) {
 	if got != want {
 		t.Errorf("got %+v, want %+v", got, want)
 	}
-}
-
-func newCLIForTesting(store PlayerStore, in io.Reader, out io.Writer, alerter BlindAlerter) *CLI {
-	game := NewGame(alerter, store)
-	cli := NewCLI(in, out, game)
-
-	return cli
 }
